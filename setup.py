@@ -9,8 +9,11 @@ setup(
     name='nose-allure-plugin',
     version='0.1-alpha',
     description='Nose plugin for allure framework',
+    long_description=open('README.md').read(),
     author='Sergey Chipiga',
     author_email='chipiga86@gmail.com',
+    py_modules=["nose_allure"],
+    url="https://github.com/sergeychipiga/nose-allure-plugin",
     install_requires=[
         'nose',
         'pytest-allure-adaptor'
