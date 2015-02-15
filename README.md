@@ -1,5 +1,10 @@
 It is a port of [pytest-allure-adaptor](https://github.com/allure-framework/allure-python) for [nose framework](https://github.com/nose-devs/nose).
 
+##Usage
+``` bash
+nosetests --with-allure --logdir=/path/to/put/results
+```
+
 ##Supported features
 ####Attachment
 To attach some content to test report:
