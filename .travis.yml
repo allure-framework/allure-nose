@@ -1,10 +1,20 @@
 language: python
-python:
-  - '2.7'
-  - '3.3'
-  - '3.4'
+env:
+- TOX_ENV=py27
+- TOX_ENV=py33
+- TOX_ENV=py34
+- TOX_ENV=static_check
 install: pip install tox
-script: tox
+script: tox -e $TOX_ENV
 notifications:
   email:
   - chipiga86@gmail.com
+deploy:
+  provider: pypi
+  user: svchipiga
+  password:
+    secure: oZZVHLgCm3ssJWzELyHosP9Y2CsOfW92M/YBzJYSNQCoVKnCfspoP0LV4m6YdgQI5fX1YAy0E5IDU1RuVnxKClC8dDJAn8U79KuDarb53tf1wLuwY7pSh5+Qd5zwMSGgrpO1yWEAiEdxsv9ajJ5l2hXtXf2VacnEUAapNEgbTHM=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    branch: master
