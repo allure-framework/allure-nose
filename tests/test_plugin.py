@@ -7,8 +7,6 @@ from .utils import launch, report_for, environment_for
 
 def test_report_one_test():
     test_suite = """
-import nose
-
 def test_dummy():
     pass
 """
@@ -21,8 +19,6 @@ def test_dummy():
 def test_report_test_present():
     test_name = 'test_dummy'
     test_suite = """
-import nose
-
 def %s():
     pass
     """ % test_name
@@ -30,6 +26,22 @@ def %s():
     report = report_for(test_suite)
 
     assert report.find('.//test-case/name').text.split('.')[-1] == test_name
+
+def test_unittest():
+    test_class = 'Testing'
+    test_name = 'test_dummy'
+    test_suite = """
+import unittest
+
+class %s(unittest.TestCase):
+    def %s(self):
+        self.assertTrue(True)
+    """ % (test_class, test_name)
+
+    report = report_for(test_suite)
+
+    assert report.find('.//test-case/name').text.split('.')[-1] == test_name
+    assert report.find('.//test-case/name').text.split('.')[-2] == test_class
 
 
 def test_report_step_context():
@@ -111,8 +123,6 @@ def test_failed():
 
 def test_report_two_tests():
     test_suite = """
-import nose
-
 def test_passed():
     assert True
 
@@ -127,15 +137,9 @@ def test_failed():
 
 def test_report_two_modules():
     test_suite = """
-import nose
-
 def test_passed():
     pass
-
 --
-
-import nose
-
 def test_passed():
     pass
     """
@@ -148,8 +152,6 @@ def test_passed():
 def test_report_class():
     class_name = 'TestDummy'
     test_suite = """
-import nose
-
 class %s(object):
     def test_passed(self):
         pass
@@ -163,8 +165,6 @@ class %s(object):
 def test_report_function_and_class():
     class_name = 'TestDummy'
     test_suite = """
-import nose
-
 def test_passed():
     pass
 
@@ -182,9 +182,6 @@ def test_module_description():
     description = "I'm module!"
     test_suite = '''
 """%s"""
-
-import nose
-
 def test_dummy():
     pass
     ''' % description
@@ -197,8 +194,6 @@ def test_dummy():
 def test_function_description():
     description = "I'm function!"
     test_suite = '''
-import nose
-
 def test_dummy():
     """%s"""
     ''' % description

@@ -23,7 +23,7 @@ def get_labels(test):
         return markers
 
     labels = []
-    label_markers = get_markers(test.test.test, Label.DEFAULT)
+    label_markers = get_markers(test, Label.DEFAULT)
     for name, value in label_markers:
         labels.append(TestLabel(name=name, value=value))
 
