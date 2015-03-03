@@ -62,8 +62,16 @@ class Allure(Plugin):
             self.allure.impl.stop_suite()
 
     def startTest(self, test):
-        self.allure.impl.start_case(test, description=test.test.test.__doc__,
-                                    labels=get_labels(test))
+        if hasattr(test.test, "test"):
+            method = test.test.test
+        else:
+            method = getattr(test.test, test.test._testMethodName)
+
+        docstring = method.__doc__
+        hierarchy = ".".join(test.address()[1:])
+
+        self.allure.impl.start_case(hierarchy, description=docstring,
+                                    labels=get_labels(method))
 
     def addError(self, test, err):
         message, trace = self._parse_tb(err)
