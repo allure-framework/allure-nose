@@ -7,13 +7,13 @@ from setuptools import setup
 
 setup(
     name='nose-allure-plugin',
-    version='1.0',
+    version='1.0.1',
     description='Nose plugin for allure framework',
     long_description=open('README.rst').read(),
     author='Sergey Chipiga',
     author_email='chipiga86@gmail.com',
     packages=["nose_allure"],
-    url="https://github.com/sergeychipiga/nose-allure-plugin",
+    url="https://github.com/allure-framework/allure-nose-adaptor",
     install_requires=[
         'nose',
         'pytest-allure-adaptor'

@@ -1,9 +1,9 @@
-Nose Allure Plugin
-==================
+Allure Nose Adaptor
+===================
 
-.. image:: https://travis-ci.org/sergeychipiga/nose-allure-plugin.svg?branch=master
+.. image:: https://travis-ci.org/allure-framework/allure-nose-adaptor.svg?branch=master
         :alt: Build Status
-        :target: https://travis-ci.org/sergeychipiga/nose-allure-plugin/
+        :target: https://travis-ci.org/allure-framework/allure-nose-adaptor/
 .. image:: https://pypip.in/v/nose-allure-plugin/badge.png
         :alt: Release Status
         :target: https://pypi.python.org/pypi/nose-allure-plugin
@@ -94,9 +94,9 @@ Any test, class or module can be marked with different severity:
 
  import nose
 
- @nose.allure.severity(nose.allure.severity_level.CRITICAL)
  class TestBar(object):
 
+     @nose.allure.severity(nose.allure.severity_level.CRITICAL)
      def test_bar(self):
          pass
 
@@ -139,10 +139,10 @@ Feature and Story can be set for test.
  def test_minor():
      assert False
 
- @nose.allure.feature('Feature2')
- @nose.allure.story('Story1')
  class TestBar(object):
 
+     @nose.allure.feature('Feature2')
+     @nose.allure.story('Story1')
      def test_bar(self):
          pass
 
