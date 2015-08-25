@@ -13,7 +13,7 @@ deploy:
   provider: pypi
   user: svchipiga
   password:
-    secure: oZZVHLgCm3ssJWzELyHosP9Y2CsOfW92M/YBzJYSNQCoVKnCfspoP0LV4m6YdgQI5fX1YAy0E5IDU1RuVnxKClC8dDJAn8U79KuDarb53tf1wLuwY7pSh5+Qd5zwMSGgrpO1yWEAiEdxsv9ajJ5l2hXtXf2VacnEUAapNEgbTHM=
+    secure: mcCp+lkVub7cZWW5tRsWjfUSzLnA7CS+ymsdM8lUQiNs5Uiq9FaDm+aWTxu4dtM5OAEP8xRGWbsF/I4dWOi7hWGeeOAdS/Z1oOLdbWmtvvqK/Z1FBhy10DSlUbM6Ik6bvquphZ84QojUxQfxbrN3QJMLxYK4rFlpsqE1DKx3/Ms=
   distributions: sdist bdist_wheel
   on:
     tags: true
