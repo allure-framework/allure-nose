@@ -15,6 +15,8 @@ from .utils import AllureWrapper, get_labels
 
 class Allure(Plugin):
 
+    test_suite = False
+
     def options(self, parser, env):
         super(Allure, self).options(parser, env)
 
@@ -26,6 +28,7 @@ class Allure(Plugin):
 
     def configure(self, options, conf):
         super(Allure, self).configure(options, conf)
+        self.options = options
 
         if options.logdir:
             self.allure = nose.allure = AllureWrapper(options.logdir)
@@ -52,26 +55,39 @@ class Allure(Plugin):
         if not self.conf.options.logdir:
             raise LookupError('Should provide "--logdir" argument!')
 
-    def startContext(self, context):
-        if isinstance(context, ModuleType):
-            self.allure.impl.start_suite(name=context.__name__,
-                                         description=context.__doc__)
-
-    def stopContext(self, context):
-        if isinstance(context, ModuleType):
-            self.allure.impl.stop_suite()
-
     def startTest(self, test):
+        if not self.test_suite:
+            context_name = getattr(test.context, '__module__',
+                                   test.context.__name__)
+            self.allure.impl.start_suite(name=context_name,
+                                         description=test.context.__doc__ or
+                                         None)
+            self.test_suite = True
+
         if hasattr(test.test, "test"):
             method = test.test.test
         else:
             method = getattr(test.test, test.test._testMethodName)
 
-        docstring = method.__doc__
         hierarchy = ".".join(test.address()[1:])
 
-        self.allure.impl.start_case(hierarchy, description=docstring,
+        self.allure.impl.start_case(hierarchy, description=method.__doc__,
                                     labels=get_labels(method))
+
+    def stopTest(self, test):
+        # if we running in multiprocess mode we should trigger suite closing
+        # each time when we exiting test
+        if self.options.multiprocess_workers:
+            self.allure.impl.stop_suite()
+            self.test_suite = False
+
+    def stopContext(self, context):
+        # if we running not in multiprocess mode we should trigger suite
+        # closing only when exiting context
+        if not self.options.multiprocess_workers and \
+                isinstance(context, ModuleType):
+            self.allure.impl.stop_suite()
+            self.test_suite = False
 
     def addError(self, test, err):
         message, trace = self._parse_tb(err)

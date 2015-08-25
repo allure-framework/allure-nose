@@ -27,6 +27,7 @@ def %s():
 
     assert report.find('.//test-case/name').text.split('.')[-1] == test_name
 
+
 def test_unittest():
     test_class = 'Testing'
     test_name = 'test_dummy'
