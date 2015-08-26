@@ -94,7 +94,6 @@ class Allure(Plugin):
         # each time when we exiting test
         if self.options.multiprocess_workers:
             self.allure.impl.stop_suite()
-            print 'Stopped'
             self.test_suite = False
 
     @run_only_when_suite_exist
