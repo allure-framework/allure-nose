@@ -4,6 +4,7 @@ __author__ = "chipiga86@gmail.com"
 
 import traceback
 from types import ModuleType
+from functools import wraps
 
 import nose
 from allure.constants import Status, Label
@@ -11,6 +12,19 @@ from nose.plugins.base import Plugin
 from nose.plugins.attrib import AttributeSelector
 
 from .utils import AllureWrapper, get_labels
+
+
+def run_only_when_suite_exist(func):
+    """
+    Decorator to disable method if allure doesnt have any active suites.
+    This is needed to avoid of IndexError that hides the real exception.
+    """
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self.allure.impl.stack:
+            return func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class Allure(Plugin):
@@ -74,6 +88,7 @@ class Allure(Plugin):
         self.allure.impl.start_case(hierarchy, description=method.__doc__,
                                     labels=get_labels(method))
 
+    @run_only_when_suite_exist
     def stopTest(self, test):
         # if we running in multiprocess mode we should trigger suite closing
         # each time when we exiting test
@@ -81,25 +96,30 @@ class Allure(Plugin):
             self.allure.impl.stop_suite()
             self.test_suite = False
 
+    @run_only_when_suite_exist
     def stopContext(self, context):
         # if we running not in multiprocess mode we should trigger suite
         # closing only when exiting context
-        if not self.options.multiprocess_workers and \
+        if not self.options.multiprocess_workers and self.test_suite and \
                 isinstance(context, ModuleType):
             self.allure.impl.stop_suite()
             self.test_suite = False
 
+    @run_only_when_suite_exist
     def addError(self, test, err):
         message, trace = self._parse_tb(err)
         self.allure.impl.stop_case(Status.BROKEN, message=message, trace=trace)
 
+    @run_only_when_suite_exist
     def addFailure(self, test, err):
         message, trace = self._parse_tb(err)
         self.allure.impl.stop_case(Status.FAILED, message=message, trace=trace)
 
+    @run_only_when_suite_exist
     def addSuccess(self, test):
         self.allure.impl.stop_case(Status.PASSED)
 
+    @run_only_when_suite_exist
     def addSkip(self, test):
         self.allure.impl.stop_case(Status.CANCELED)
 
