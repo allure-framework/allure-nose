@@ -2,6 +2,7 @@
 
 __author__ = "chipiga86@gmail.com"
 
+import os
 import traceback
 from types import ModuleType
 from functools import wraps
@@ -35,6 +36,8 @@ class Allure(Plugin):
         super(Allure, self).options(parser, env)
 
         parser.add_option('--logdir', dest='logdir')
+        parser.add_option('--not-clear-logdir', dest='not_clear_logdir',
+                          action='store_true', default=False)
         parser.add_option('--feature', dest='feature')
         parser.add_option('--story', dest='story')
         parser.add_option('--issue', dest='issue')
@@ -45,7 +48,23 @@ class Allure(Plugin):
         self.options = options
 
         if options.logdir:
-            self.allure = nose.allure = AllureWrapper(options.logdir)
+            logdir = os.path.normpath(os.path.abspath(os.path.expanduser(
+                os.path.expandvars(options.logdir))))
+
+            if not os.path.isdir(logdir):
+                os.makedirs(logdir)
+            else:
+                # Need to provide an option to skip dir cleaning due to multiprocess
+                # plugin usage can lead to logdir cleaning at the end of testing.
+                # Unfortunately not possible to detect is it child process or parent.
+                # Otherwise possible to clean logdir only in parent process always.
+                if not options.not_clear_logdir:
+                    for file_name in os.listdir(logdir):
+                        file_path = os.path.join(logdir, file_name)
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+
+            self.allure = nose.allure = AllureWrapper(logdir)
 
         for label in 'feature', 'story', 'issue', 'severity':
             if getattr(options, label, None):
