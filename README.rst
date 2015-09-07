@@ -19,7 +19,9 @@ Usage
 .. code:: bash
 
  nosetests --with-allure --logdir=/path/to/put/results
+ nosetests --with-allure --logdir=/path/to/put/results --not-clear-logdir
 
+Option "--not-clear-logdir" is useful with option "--processes" to prevent cleaning of logdr at the end of testing.
 
 Supported features
 ==================

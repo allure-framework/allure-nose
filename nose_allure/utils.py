@@ -30,10 +30,22 @@ def get_labels(test):
     return labels
 
 
+class Allure(AllureImpl):
+    """By defaul AllureImpl clears logdir with instantiation. Using nosetests
+    with key --processes=<n> can lead to cleaning of logdir at the end.
+    """
+
+    def __init__(self, logdir):
+        self.logdir = logdir
+        self.stack = []
+        self.testsuite = None
+        self.environment = {}
+
+
 class AllureWrapper(object):
 
     def __init__(self, logdir):
-        self.impl = AllureImpl(logdir)
+        self.impl = Allure(logdir)
 
     get_listener = lambda self: self.impl  # compatibility with pytest_plugin
 
