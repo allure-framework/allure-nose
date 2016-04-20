@@ -102,7 +102,7 @@ class Allure(Plugin):
         else:
             method = getattr(test.test, test.test._testMethodName)
 
-        hierarchy = ".".join([filter(None, test.address()[1:]))
+        hierarchy = ".".join(filter(None, test.address()[1:]))
 
         self.allure.impl.start_case(hierarchy, description=method.__doc__,
                                     labels=get_labels(method))
