@@ -4,10 +4,10 @@ Allure Nose Adaptor
 .. image:: https://travis-ci.org/allure-framework/allure-nose-adaptor.svg?branch=master
         :alt: Build Status
         :target: https://travis-ci.org/allure-framework/allure-nose-adaptor/
-.. image:: https://pypip.in/v/nose-allure-plugin/badge.png
+.. image:: https://img.shields.io/pypi/v/nose-allure-plugin.svg
         :alt: Release Status
         :target: https://pypi.python.org/pypi/nose-allure-plugin
-.. image:: https://pypip.in/d/nose-allure-plugin/badge.png
+.. image:: https://img.shields.io/pypi/dm/nose-allure-plugin.svg
         :alt: Downloads
         :target: https://pypi.python.org/pypi/nose-allure-plugin
 
