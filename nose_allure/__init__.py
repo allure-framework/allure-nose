@@ -147,7 +147,15 @@ class Allure(Plugin):
 
     @staticmethod
     def _parse_tb(trace):
-        message = ''.join(
-            traceback.format_exception_only(trace[0], trace[1])).strip()
-        trace = ''.join(traceback.format_exception(*trace)).strip()
+        try:
+            message = ''.join(
+                traceback.format_exception_only(trace[0], trace[1])).strip()
+            trace = ''.join(traceback.format_exception(*trace)).strip()
+        except AttributeError:
+            # in python 3 AttributeError: 'str' object has no attribute '__cause__' is thrown here
+            # traceback.format_exception() now expects the second argument to be an exception instance
+            _trace = (trace[0], trace[0](trace[1])) + trace[2:]
+            message = ''.join(traceback.format_exception_only(_trace[0], _trace[1])).strip()
+            trace = ''.join(traceback.format_exception(*_trace)).strip()
+
         return message, trace
