@@ -3,6 +3,7 @@
 __author__ = "chipiga86@gmail.com"
 
 import os
+import sys
 import traceback
 from types import ModuleType
 from functools import wraps
@@ -93,8 +94,7 @@ class Allure(Plugin):
             context_name = getattr(test.context, '__module__',
                                    test.context.__name__)
             self.allure.impl.start_suite(name=context_name,
-                                         description=test.context.__doc__ or
-                                         None)
+                                         description=test.context.__doc__ or None)
             self.test_suite = True
 
         if hasattr(test.test, "test"):
@@ -126,11 +126,15 @@ class Allure(Plugin):
 
     @run_only_when_suite_exist
     def addError(self, test, err):
+        if type(err[1]) is str:
+            err = sys.exc_info()
         message, trace = self._parse_tb(err)
         self.allure.impl.stop_case(Status.BROKEN, message=message, trace=trace)
 
     @run_only_when_suite_exist
     def addFailure(self, test, err):
+        if type(err[1]) is str:
+            err = sys.exc_info()
         message, trace = self._parse_tb(err)
         self.allure.impl.stop_case(Status.FAILED, message=message, trace=trace)
 
