@@ -7,7 +7,7 @@ from setuptools import setup
 
 setup(
     name='nose-allure-plugin',
-    version='1.0.5',
+    version='1.0.6',
     description='Nose plugin for allure framework',
     long_description=open('README.rst').read(),
     author='Sergey Chipiga',
