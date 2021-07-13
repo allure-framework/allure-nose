@@ -149,7 +149,7 @@ class Allure(Plugin):
     def _parse_tb(trace):
         if type(trace[1]) is str:
             trace = sys.exc_info()
-            
+
         message = ''.join(
             traceback.format_exception_only(trace[0], trace[1])).strip()
         trace = ''.join(traceback.format_exception(*trace)).strip()
