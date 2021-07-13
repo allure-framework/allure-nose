@@ -26,6 +26,8 @@ def get_labels(test):
     label_markers = get_markers(test, Label.DEFAULT)
     for name, value in label_markers:
         labels.append(TestLabel(name=name, value=value))
+    labels.append(TestLabel(name=Label.FRAMEWORK, value="nose"))
+    labels.append(TestLabel(name=Label.LANGUAGE, value="python"))
 
     return labels
 
