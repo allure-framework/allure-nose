@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -25,5 +25,8 @@ jobs:
       - name: Install tox
         run: pip install tox
 
+      - name: Static check
+        run: tox -e static_check
+
       - name: Run tests
-        run: tox -e py`echo ${{ matrix.python-version }} | sed 's/\.//g'`
+        run: tox -e py
