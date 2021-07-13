@@ -3,6 +3,7 @@
 __author__ = "chipiga86@gmail.com"
 
 import os
+import sys
 import traceback
 from types import ModuleType
 from functools import wraps
@@ -146,6 +147,9 @@ class Allure(Plugin):
 
     @staticmethod
     def _parse_tb(trace):
+        if type(trace[1]) is str:
+            trace = sys.exc_info()
+
         message = ''.join(
             traceback.format_exception_only(trace[0], trace[1])).strip()
         trace = ''.join(traceback.format_exception(*trace)).strip()
