@@ -8,6 +8,8 @@ from xml.etree import ElementTree as ET
 
 from nose import run
 from nose_allure import Allure
+from contextlib import redirect_stderr
+from io import StringIO
 
 
 def launch(test_suite, argv=[]):
@@ -19,8 +21,9 @@ def launch(test_suite, argv=[]):
         with open(file_name, 'wt') as f:
             f.write(part)
 
-    run(defaultTest=tmp_dir, addplugins=[Allure()],
-        argv=['', '--with-allure', '--logdir=%s' % result_dir] + argv)
+    with redirect_stderr(StringIO()) as _:
+        run(defaultTest=tmp_dir, addplugins=[Allure()],
+            argv=['', '--with-allure', '--logdir=%s' % result_dir] + argv)
 
     return [os.path.join(result_dir, name) for name in os.listdir(result_dir)]
 
