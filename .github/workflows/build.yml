@@ -26,7 +26,7 @@ jobs:
         run: pip install tox
 
       - name: Static check
-        run: tox -e static-check
+        run: tox -e static_check
 
       - name: Run tests
         run: tox -e py
