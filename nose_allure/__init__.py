@@ -93,8 +93,7 @@ class Allure(Plugin):
             context_name = getattr(test.context, '__module__',
                                    test.context.__name__)
             self.allure.impl.start_suite(name=context_name,
-                                         description=test.context.__doc__ or
-                                         None)
+                                         description=test.context.__doc__ or None)
             self.test_suite = True
 
         if hasattr(test.test, "test"):
