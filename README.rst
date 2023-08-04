@@ -1,3 +1,9 @@
+Deprecated
+===================
+
+Please follow https://github.com/allure-framework/allure-python
+
+
 Allure Nose Adaptor
 ===================
 
